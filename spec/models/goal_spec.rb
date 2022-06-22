@@ -11,4 +11,7 @@ RSpec.describe Goal, type: :model do
     it { is_expected.to validate_presence_of(:interest_rate) }
     # it { is_expected.to validate_numericality_of(:amount) }
   end
+  describe 'has many associated' do
+    it { should have_many(:contributions) }
+  end
 end

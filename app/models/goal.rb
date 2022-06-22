@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Goal < ApplicationRecord
+  has_many :contributions
   validates :title, presence: true
   validates :amount, presence: true
   validates :description, presence: true
