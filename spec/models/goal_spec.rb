@@ -3,7 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Goal, type: :model do
-  it 'tests a number to be positive' do
-    expect(1).to be_positive
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:amount) }
+    it { is_expected.to validate_presence_of(:description) }
+    it { is_expected.to validate_presence_of(:deadline) }
+    it { is_expected.to validate_presence_of(:interest_rate) }
+    # it { is_expected.to validate_numericality_of(:amount) }
   end
 end
