@@ -48,7 +48,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.1', '>= 5.1.2'
   gem 'rubocop', '~> 1.30.0'
   gem 'rubocop-performance', '~> 1.0'
-  gem 'rubocop-rspec', '~> 2.11', '>= 2.11.1'
 end
 
 group :test do
