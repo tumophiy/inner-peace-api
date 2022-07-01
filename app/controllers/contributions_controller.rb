@@ -1,5 +1,10 @@
 class ContributionsController < ApplicationController
   def index
-    render json: Contribution.all, status: :ok
+    contributions = Contribution.all
+    render json: serializer.new(contributions), status: :ok
+  end
+
+  def serializer
+    ContributionSerializer
   end
 end
