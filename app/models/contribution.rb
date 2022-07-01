@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 class Contribution < ApplicationRecord
-  has_one :goal
+  belongs_to :goal
   validates :amount, presence: true
   validates :description, presence: true
+
+  scope :recent, -> { order(created_at: :desc) }
 end
