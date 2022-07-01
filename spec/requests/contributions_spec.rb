@@ -9,19 +9,18 @@ RSpec.describe 'Contributions' do
 
     it 'reterns a proper JSON' do
       goal = create :goal
-      contribution = create :contribution
+      contribution = create(:contribution, goal_id: goal.id)
       get '/contributions'
-      body = JSON.parse(response.body)
-      expect(body).to eq(
-        data: [
-          id: contribution.id,
-          type: 'contributions',
-          attributes: {
-            amount: contribution.amount,
-            description: contribution.description
-          }
-        ]
-      )
+      expect(json_data.length).to eq(1)
+      expected = json_data.first
+      aggregate_failures do
+        expect(expected[:id]).to eq(contribution.id.to_s)
+        expect(expected[:type]).to eq('contribution')
+        expect(expected[:attributes]).to eq(
+          amount: contribution.amount,
+          description: contribution.description
+        )
+      end
     end
   end
 end
