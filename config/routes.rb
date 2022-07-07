@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   # Defines the root path route ("/")
-  resources :goals, only: [:show]
-  resources :contributions
+  resources :goals, only: %w[index show create delete update]
+  scope 'api' do
+    scope '/goals/:goals_id' do
+      resources :contribution, only: %w[index show create delete update]
+    end
+  end
 end
