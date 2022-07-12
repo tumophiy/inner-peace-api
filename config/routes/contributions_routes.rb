@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   scope 'api' do
-    scope '/goals/:goals_id' do
+    scope '/goals/:goal_id' do
       resources :contributions, only: %i[create show index update destroy]
     end
   end

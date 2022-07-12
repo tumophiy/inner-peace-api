@@ -34,6 +34,12 @@ RSpec.describe 'Contributions' do
     end
   end
 
+  describe 'create' do
+    it 'create contribution' do
+      post '/api/goals/:goal_id/contributions', params 
+    end
+  end
+
   private
 
   def new_contribution
