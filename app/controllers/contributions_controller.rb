@@ -9,7 +9,7 @@ class ContributionsController < ApplicationController
   # def serializer
   #   ContributionSerializer
   # end
-  before_action :set_contribution, only: %i[show update]
+  before_action :contribution, only: %i[show update]
   def index
     contributions = Contribution.where(goal_id: params[:goal_id]).order(created_at: :desc)
     render json: contributions
@@ -35,7 +35,7 @@ class ContributionsController < ApplicationController
 
   private
 
-  def set_contribution
+  def contribution
     @contribution = Contribution.find(params[:id])
   end
 

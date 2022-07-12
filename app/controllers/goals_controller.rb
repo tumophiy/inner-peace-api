@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GoalsController < ApplicationController
-  before_action :set_goal, only: %i[show update]
+  before_action :goal, only: %i[show update]
   def index
     render json: Goal.all
   end
@@ -26,7 +26,7 @@ class GoalsController < ApplicationController
 
   private
 
-  def set_goal
+  def goal
     @goal = Goal.find(params[:id])
   end
 
