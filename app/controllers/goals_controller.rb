@@ -3,16 +3,16 @@
 class GoalsController < ApplicationController
   before_action :goal, only: %i[show update]
   def index
-    render json: Goal.all
+    render_serializered_data(Goal.all)
   end
 
   def show
-    render json: @goal
+    render_serializered_data(@goal)
   end
 
   def create
     goal = Goal.create(goal_params)
-    render json: goal
+    render_serializered_data(goal)
   end
 
   def destroy
@@ -21,10 +21,14 @@ class GoalsController < ApplicationController
 
   def update
     @goal.update(goal_params)
-    render json: @goal
+    render_serializered_data(@goal)
   end
 
   private
+
+  def render_serializered_data(obj)
+    render json: GoalSerializer.new(obj), status: :ok
+  end
 
   def goal
     @goal = Goal.find(params[:id])

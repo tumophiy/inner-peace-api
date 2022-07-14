@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ContributionSerializer
-  include FastJsonapi::ObjectSerializer
+  include JSONAPI::Serializer
+
   attributes :amount, :description
+  belongs_to :goal
 end
