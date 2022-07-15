@@ -3,31 +3,40 @@
 class GoalsController < ApplicationController
   before_action :goal, only: %i[show update]
   def index
-    render_serializered_data(Goal.all)
+    render_serializered_data(Goal.recent, :ok)
   end
 
   def show
-    render_serializered_data(@goal)
+    render_serializered_data(@goal, :ok)
   end
 
   def create
     goal = Goal.create(goal_params)
-    render_serializered_data(goal)
+    if goal.valid?
+      render_serializered_data(goal, :created)
+    else
+      render json: goal.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
     Goal.destroy(params[:id])
+    render json: {}, status: 204
   end
 
   def update
     @goal.update(goal_params)
-    render_serializered_data(@goal)
+    if @goal.valid?
+      render_serializered_data(@goal, :ok)
+    else
+      render json: goal.errors, status: :unprocessable_entity
+    end
   end
 
   private
 
-  def render_serializered_data(obj)
-    render json: GoalSerializer.new(obj), status: :ok
+  def render_serializered_data(obj, status)
+    render json: GoalSerializer.new(obj), status: status
   end
 
   def goal
@@ -35,6 +44,6 @@ class GoalsController < ApplicationController
   end
 
   def goal_params
-    params.permit(:title, :amount, :description, :interest_rate, :deadline)
+    params.require(:goal).permit(:title, :amount, :description, :interest_rate, :deadline)
   end
 end
