@@ -8,9 +8,7 @@ RSpec.describe 'Goals', type: :request do
   let(:base_route) { '/api/goals/' }
 
   describe 'GET /index' do
-    before do
-      create_list(:goal, 10)
-    end
+    let!(:goals) { create_list(:goal, 10) }
 
     it 'returns all goals' do
       get base_route
@@ -20,33 +18,35 @@ RSpec.describe 'Goals', type: :request do
   end
 
   describe 'POST /create' do
-    let(:params) { { goal: { amount: '', interest_rate: '', title: '', description: '', deadline: '' } } }
-    context 'with valid params' do
-      before do
-        params = { goal: { amount: goal.amount, interest_rate: goal.interest_rate,
-                           title: goal.title, description: goal.description, deadline: goal.deadline } }
-        post base_route, params: params, as: :json
-      end
+    let(:invalid_params) { { goal: { amount: '', interest_rate: '', title: '', description: '', deadline: '' } } }
+    let(:valid_params) do
+      {
+        goal: { amount: goal.amount, interest_rate: goal.interest_rate,
+                title: goal.title, description: goal.description,
+                deadline: goal.deadline }
+      }
+    end
 
+    context 'with valid params' do
       it 'returns the title' do
+        post base_route, params: valid_params, as: :json
         expect(response_body[:attributes][:title]).to eq(goal.title)
       end
 
       it 'returns the amount' do
+        post base_route, params: valid_params, as: :json
         expect(response_body[:attributes][:amount]).to eq(goal.amount)
       end
 
       it 'returns a created status' do
+        post base_route, params: valid_params, as: :json
         expect(response).to have_http_status(:created)
       end
     end
 
     context 'with invalid params' do
-      before do
-        post base_route, params: params, as: :json
-      end
-
       it 'returns a unprocessable entity status' do
+        post base_route, params: invalid_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -76,33 +76,35 @@ RSpec.describe 'Goals', type: :request do
   end
 
   describe 'PUT /update' do
-    let(:params) { { goal: { amount: '', interest_rate: '', title: '', description: '', deadline: '' } } }
-    context 'with valid params' do
-      before do
-        params = { goal: { amount: goal.amount, interest_rate: goal.interest_rate,
-                           title: goal.title, description: goal.description, deadline: goal.deadline } }
-        put "#{base_route}#{goal_id}", params: params, as: :json
-      end
+    let(:invalid_params) { { goal: { amount: '', interest_rate: '', title: '', description: '', deadline: '' } } }
+    let(:valid_params) do
+      {
+        goal: { amount: goal.amount, interest_rate: goal.interest_rate,
+                title: goal.title, description: goal.description,
+                deadline: goal.deadline }
+      }
+    end
 
+    context 'with valid params' do
       it 'returns the title' do
+        put "#{base_route}#{goal_id}", params: valid_params, as: :json
         expect(response_body[:attributes][:title]).to eq(goal.title)
       end
 
       it 'returns the amount' do
+        put "#{base_route}#{goal_id}", params: valid_params, as: :json
         expect(response_body[:attributes][:amount]).to eq(goal.amount)
       end
 
       it 'returns a created status' do
+        put "#{base_route}#{goal_id}", params: valid_params, as: :json
         expect(response).to have_http_status(:ok)
       end
     end
 
     context 'with invalid params' do
-      before do
-        put "#{base_route}#{goal_id}", params: params, as: :json
-      end
-
       it 'returns a unprocessable entity status' do
+        put "#{base_route}#{goal_id}", params: invalid_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
