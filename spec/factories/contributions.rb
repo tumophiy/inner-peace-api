@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :contribution do
-    amount { 1 }
-    description { 'MyString' }
-    expected_date { '2022-06-22' }
+    amount { Faker::Number.number(digits: 3) }
+    description { Faker::Lorem.sentence }
+    expected_date { Faker::Date.forward(days: 23) }
     association :goal_id
   end
 end
