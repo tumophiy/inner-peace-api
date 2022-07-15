@@ -8,38 +8,24 @@ RSpec.describe 'Goals', type: :request do
   let(:base_route) { '/api/goals/' }
 
   describe 'GET /index' do
-    it 'renders a successful response' do
-      get base_route
-      expect(response).to be_successful
+    before do
+      create_list(:goal, 10)
     end
 
     it 'returns all goals' do
-      create_list(:goal, 10)
       get base_route
+      expect(response).to be_successful
       expect(response_body.size).to eq(10)
-    end
-
-    it 'should return articles in the proper order' do
-      old_goal = create :goal
-      newer_goal = create :goal
-      get base_route
-      expect(response_body.length).to eq(2)
-      expect(response_body.first[:id]).to eq(newer_goal.id.to_s)
-      expect(response_body.last[:id]).to eq(old_goal.id.to_s)
     end
   end
 
   describe 'POST /create' do
+    let(:params) { { goal: { amount: '', interest_rate: '', title: '', description: '', deadline: '' } } }
     context 'with valid params' do
       before do
-        post base_route, params:
-                          { goal: {
-                            amount: goal.amount,
-                            interest_rate: goal.interest_rate,
-                            title: goal.title,
-                            description: goal.description,
-                            deadline: goal.deadline
-                          } }
+        params = { goal: { amount: goal.amount, interest_rate: goal.interest_rate,
+                           title: goal.title, description: goal.description, deadline: goal.deadline } }
+        post base_route, params: params, as: :json
       end
 
       it 'returns the title' do
@@ -57,14 +43,7 @@ RSpec.describe 'Goals', type: :request do
 
     context 'with invalid params' do
       before do
-        post base_route, params:
-                          { goal: {
-                            amount: '',
-                            interest_rate: '',
-                            title: '',
-                            description: '',
-                            deadline: ''
-                          } }
+        post base_route, params: params, as: :json
       end
 
       it 'returns a unprocessable entity status' do
@@ -97,16 +76,12 @@ RSpec.describe 'Goals', type: :request do
   end
 
   describe 'PUT /update' do
+    let(:params) { { goal: { amount: '', interest_rate: '', title: '', description: '', deadline: '' } } }
     context 'with valid params' do
       before do
-        put "#{base_route}#{goal_id}", params:
-                                          { goal: {
-                                            amount: goal.amount,
-                                            interest_rate: goal.interest_rate,
-                                            title: goal.title,
-                                            description: goal.description,
-                                            deadline: goal.deadline
-                                          } }
+        params = { goal: { amount: goal.amount, interest_rate: goal.interest_rate,
+                           title: goal.title, description: goal.description, deadline: goal.deadline } }
+        put "#{base_route}#{goal_id}", params: params, as: :json
       end
 
       it 'returns the title' do
@@ -124,14 +99,7 @@ RSpec.describe 'Goals', type: :request do
 
     context 'with invalid params' do
       before do
-        put "#{base_route}#{goal_id}", params:
-                                        { goal: {
-                                          amount: '',
-                                          interest_rate: '',
-                                          title: '',
-                                          description: '',
-                                          deadline: ''
-                                        } }
+        put "#{base_route}#{goal_id}", params: params, as: :json
       end
 
       it 'returns a unprocessable entity status' do
