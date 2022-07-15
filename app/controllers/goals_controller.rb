@@ -25,8 +25,7 @@ class GoalsController < ApplicationController
   end
 
   def update
-    @goal.update(goal_params)
-    if @goal.valid?
+    if @goal.update(goal_params)
       render_serializered_data(@goal, :ok)
     else
       render json: goal.errors, status: :unprocessable_entity
