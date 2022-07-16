@@ -7,6 +7,7 @@ ruby '3.0.0'
 
 gem 'devise', '~> 4.8', '>= 4.8.1'
 gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'
+gem 'jsonapi-serializer', '~> 2.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.3'
@@ -45,9 +46,12 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails', '~> 6.2'
+  gem 'faker', '~> 2.21'
+  gem 'pry', '~> 0.14.1'
   gem 'rspec-rails', '~> 5.1', '>= 5.1.2'
-  gem 'rubocop', '~> 1.30.0'
+  gem 'rubocop', '~> 1.31', '>= 1.31.2'
   gem 'rubocop-performance', '~> 1.0'
+  gem 'rubocop-rspec', '~> 2.12', '>= 2.12.1'
 end
 
 group :test do

@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  def load_routes_folder(base_foldername)
+    this_directory = File.dirname(File.expand_path(__FILE__))
+    route_folder_path = File.expand_path(base_foldername, this_directory)
+    Dir["#{route_folder_path}/**/*.rb"].each do |path|
+      load path
+    end
+  end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  load_routes_folder('routes')
 end

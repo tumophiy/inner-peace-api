@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,29 +12,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_22_105825) do
+ActiveRecord::Schema[7.0].define(version: 20_220_622_105_825) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "contributions", force: :cascade do |t|
-    t.integer "amount", null: false
-    t.string "description", null: false
-    t.date "expected_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "goal_id", null: false
-    t.index ["goal_id"], name: "index_contributions_on_goal_id"
+  create_table 'contributions', force: :cascade do |t|
+    t.integer 'amount', null: false
+    t.string 'description', null: false
+    t.date 'expected_date'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.bigint 'goal_id', null: false
+    t.index ['goal_id'], name: 'index_contributions_on_goal_id'
   end
 
-  create_table "goals", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.date "deadline"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "amount"
-    t.integer "interest_rate"
+  create_table 'goals', force: :cascade do |t|
+    t.string 'title'
+    t.text 'description'
+    t.date 'deadline'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.integer 'amount'
+    t.integer 'interest_rate'
   end
 
-  add_foreign_key "contributions", "goals"
+  add_foreign_key 'contributions', 'goals'
 end
