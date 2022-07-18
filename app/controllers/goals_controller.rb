@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class GoalsController < ApplicationController
+  before_action :authenticate_user!
   before_action :goal, only: %i[show update]
   def index
     render_serializered_data(Goal.recent, :ok)
