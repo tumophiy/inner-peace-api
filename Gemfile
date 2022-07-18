@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.0'
 
 gem 'devise', '~> 4.8', '>= 4.8.1'
+gem 'devise-jwt', '~> 0.9.0'
 gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'
 gem 'jsonapi-serializer', '~> 2.2'
 
@@ -39,8 +40,7 @@ gem 'bootsnap', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem "rack-cors"
+gem 'rack-cors', '~> 1.1', '>= 1.1.1'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
