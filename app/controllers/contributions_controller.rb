@@ -13,8 +13,7 @@ class ContributionsController < ApplicationController
   end
 
   def create
-    contribution = Contribution.create(contribution_params)
-    if contribution.valid?
+    if Contribution.create(contribution_params)
       render_serializered_data(contribution, :created)
     else
       render json: contribution.errors, status: :unprocessable_entity
