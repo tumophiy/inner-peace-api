@@ -12,7 +12,8 @@ class GoalsController < ApplicationController
   end
 
   def create
-    if Goal.create(goal_params)
+    goal = Goal.create(goal_params)
+    if goal.valid?
       render_serializered_data(goal, :created)
     else
       render json: goal.errors, status: :unprocessable_entity
