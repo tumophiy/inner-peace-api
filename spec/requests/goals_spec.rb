@@ -1,17 +1,21 @@
 # frozen_string_literal: true
 
+require 'devise/jwt/test_helpers'
 require 'rails_helper'
 
 RSpec.describe 'Goals', type: :request do
+  let(:user) { create(:user) }
   let(:goal) { create :goal }
   let(:goal_id) { goal.id }
   let(:base_route) { '/api/goals/' }
+  let(:headers) { { 'Accept' => 'application/json', 'Content-Type' => 'application/json' } }
+  let(:auth_headers) { Devise::JWT::TestHelpers.auth_headers(headers, user) }
 
   describe 'GET /index' do
     let!(:goals) { create_list(:goal, 10) }
 
     it 'returns all goals' do
-      get base_route
+      get base_route, headers: auth_headers
       expect(response).to be_successful
       expect(response_body.size).to eq(10)
     end
@@ -29,24 +33,24 @@ RSpec.describe 'Goals', type: :request do
 
     context 'with valid params' do
       it 'returns the title' do
-        post base_route, params: valid_params, as: :json
+        post base_route, headers: auth_headers, params: valid_params, as: :json
         expect(response_body[:attributes][:title]).to eq(goal.title)
       end
 
       it 'returns the amount' do
-        post base_route, params: valid_params, as: :json
+        post base_route, headers: auth_headers, params: valid_params, as: :json
         expect(response_body[:attributes][:amount]).to eq(goal.amount)
       end
 
       it 'returns a created status' do
-        post base_route, params: valid_params, as: :json
+        post base_route, headers: auth_headers, params: valid_params, as: :json
         expect(response).to have_http_status(:created)
       end
     end
 
     context 'with invalid params' do
       it 'returns a unprocessable entity status' do
-        post base_route, params: invalid_params, as: :json
+        post base_route, headers: auth_headers, params: invalid_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -54,12 +58,12 @@ RSpec.describe 'Goals', type: :request do
 
   describe 'GET /show' do
     it 'renders a successful response' do
-      get "#{base_route}#{goal_id}"
+      get "#{base_route}#{goal_id}", headers: auth_headers
       expect(response).to be_successful
     end
 
     it 'should return a response in proper format' do
-      get "#{base_route}#{goal_id}"
+      get "#{base_route}#{goal_id}", headers: auth_headers
       expected = response_body
       aggregate_failures do
         expect(expected[:id]).to eq(goal.id.to_s)
@@ -87,35 +91,32 @@ RSpec.describe 'Goals', type: :request do
 
     context 'with valid params' do
       it 'returns the title' do
-        put "#{base_route}#{goal_id}", params: valid_params, as: :json
+        put "#{base_route}#{goal_id}", headers: auth_headers, params: valid_params, as: :json
         expect(response_body[:attributes][:title]).to eq(goal.title)
       end
 
       it 'returns the amount' do
-        put "#{base_route}#{goal_id}", params: valid_params, as: :json
+        put "#{base_route}#{goal_id}", headers: auth_headers, params: valid_params, as: :json
         expect(response_body[:attributes][:amount]).to eq(goal.amount)
       end
 
       it 'returns a created status' do
-        put "#{base_route}#{goal_id}", params: valid_params, as: :json
+        put "#{base_route}#{goal_id}", headers: auth_headers, params: valid_params, as: :json
         expect(response).to have_http_status(:ok)
       end
     end
 
     context 'with invalid params' do
       it 'returns a unprocessable entity status' do
-        put "#{base_route}#{goal_id}", params: invalid_params, as: :json
+        put "#{base_route}#{goal_id}", headers: auth_headers, params: invalid_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
 
   describe 'DELETE /destroy' do
-    before do
-      delete "#{base_route}#{goal_id}"
-    end
-
     it 'returns status code 204' do
+      delete "#{base_route}#{goal_id}", headers: auth_headers
       expect(response).to have_http_status(204)
     end
   end
