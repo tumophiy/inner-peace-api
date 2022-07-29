@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ContributionsController < ApplicationController
+  before_action :authenticate_user!
   before_action :contribution, only: %i[show update]
   def index
     contributions = Contribution.where(goal_id: params[:goal_id]).order(created_at: :desc)
