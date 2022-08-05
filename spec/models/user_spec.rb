@@ -7,6 +7,5 @@ RSpec.describe User, type: :model do
     # it { is_expected.to validate_presence_of(:fullname) }
   end
   describe 'associations' do
-    it { should belong_to(:role) }
   end
 end
