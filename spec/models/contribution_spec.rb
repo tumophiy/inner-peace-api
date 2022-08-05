@@ -8,8 +8,9 @@ RSpec.describe Contribution, type: :model do
     it { is_expected.to validate_presence_of(:description) }
   end
 
-  describe 'one associated' do
+  describe 'associations' do
     it { should belong_to(:goal) }
+    it { should belong_to(:user) }
   end
 
   describe '.recent' do

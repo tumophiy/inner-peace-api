@@ -14,6 +14,7 @@ RSpec.describe Goal, type: :model do
 
   describe 'has many associated' do
     it { should have_many(:contributions) }
+    it { should belong_to(:user) }
   end
 
   describe '.recent' do

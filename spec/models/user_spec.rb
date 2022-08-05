@@ -7,5 +7,7 @@ RSpec.describe User, type: :model do
     # it { is_expected.to validate_presence_of(:fullname) }
   end
   describe 'associations' do
+    it { should have_many(:goals) }
+    it { should have_many(:contributions) }
   end
 end

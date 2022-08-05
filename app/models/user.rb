@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_many :goals
+  has_many :contributions
   # :confirmable, :lockable, :timeoutable, :trackable:recoverable, :rememberable, :validatable  and :omniauthable
   devise :database_authenticatable,
          :jwt_authenticatable,

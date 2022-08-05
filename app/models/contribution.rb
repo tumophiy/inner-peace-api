@@ -2,6 +2,7 @@
 
 class Contribution < ApplicationRecord
   belongs_to :goal
+  belongs_to :user
   validates :amount, presence: true
   validates :description, presence: true
 

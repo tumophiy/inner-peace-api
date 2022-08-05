@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Goal < ApplicationRecord
+  belongs_to :user
   has_many :contributions
   validates :title, presence: true
   validates :amount, presence: true, numericality: { only_integer: true }
