@@ -27,8 +27,11 @@ RSpec.describe 'Contributions' do
   describe 'POST /create' do
     let(:invalid_params) { { contribution: { amount: '', description: '' } } }
     let(:valid_params) do
-      { contribution: { amount: contribution.amount,
-                        description: contribution.description, goal_id: goal_id } }
+      {
+        contribution: { amount: contribution.amount,
+                        description: contribution.description, goal_id: goal_id,
+                        user_id: user.id }
+      }
     end
 
     context 'with valid params' do
@@ -79,8 +82,11 @@ RSpec.describe 'Contributions' do
   describe 'PUT /update' do
     let(:invalid_params) { { contribution: { amount: '', description: '', goal_id: goal_id } } }
     let(:valid_params) do
-      { contribution: { amount: contribution.amount,
-                        description: contribution.description, goal_id: goal_id } }
+      {
+        contribution: { amount: contribution.amount,
+                        description: contribution.description, goal_id: goal_id,
+                        user_id: user.id }
+      }
     end
 
     context 'with valid params' do

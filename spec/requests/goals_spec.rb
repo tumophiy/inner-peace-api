@@ -86,7 +86,8 @@ RSpec.describe 'Goals', type: :request do
       {
         goal: { amount: goal.amount, interest_rate: goal.interest_rate,
                 title: goal.title, description: goal.description,
-                deadline: goal.deadline }
+                deadline: goal.deadline,
+                user_id: user.id }
       }
     end
 
