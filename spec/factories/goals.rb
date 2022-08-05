@@ -7,6 +7,7 @@ FactoryBot.define do
     title { Faker::Lorem.word }
     description { Faker::Lorem.sentence }
     deadline { Faker::Date.between(from: 1.years.since, to: 10.years.since) }
+    sequence :user_id
 
     trait :invalid_goal do
       amount { Faker::Lorem.word }

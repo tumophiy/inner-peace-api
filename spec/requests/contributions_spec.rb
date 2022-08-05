@@ -5,15 +5,17 @@ require 'rails_helper'
 
 RSpec.describe 'Contributions' do
   let(:user) { create(:user) }
-  let(:goal) { create :goal }
+  let(:goal) { create(:goal, user_id: user.id) }
   let(:goal_id) { goal.id }
-  let(:contribution) { create(:contribution, goal_id: goal_id) }
+  let(:contribution) { create(:contribution, goal_id: goal_id, user_id: user.id) }
   let(:base_route) { "/api/goals/#{goal_id}/contributions" }
   let(:headers) { { 'Accept' => 'application/json', 'Content-Type' => 'application/json' } }
   let(:auth_headers) { Devise::JWT::TestHelpers.auth_headers(headers, user) }
 
   describe 'GET /index' do
-    let!(:contributions) { create_list(:contribution, 10, goal_id: goal_id) }
+    let!(:contributions) do
+      create_list(:contribution, 10, goal_id: goal_id, user_id: user.id)
+    end
 
     it 'returns all goals' do
       get base_route, headers: auth_headers
