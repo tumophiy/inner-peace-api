@@ -79,41 +79,6 @@ RSpec.describe 'Contributions' do
     end
   end
 
-  describe 'PUT /update' do
-    let(:invalid_params) { { contribution: { amount: '', description: '', goal_id: goal_id } } }
-    let(:valid_params) do
-      {
-        contribution: { amount: contribution.amount,
-                        description: contribution.description, goal_id: goal_id,
-                        user_id: user.id }
-      }
-    end
-
-    context 'with valid params' do
-      it 'returns the description' do
-        put "#{base_route}/#{contribution.id}", headers: auth_headers, params: valid_params, as: :json
-        expect(response_body[:attributes][:description]).to eq(contribution.description)
-      end
-
-      it 'returns the amount' do
-        put "#{base_route}/#{contribution.id}", headers: auth_headers, params: valid_params, as: :json
-        expect(response_body[:attributes][:amount]).to eq(contribution.amount)
-      end
-
-      it 'returns a created status' do
-        put "#{base_route}/#{contribution.id}", headers: auth_headers, params: valid_params, as: :json
-        expect(response).to have_http_status(:ok)
-      end
-    end
-
-    context 'with invalid params' do
-      it 'returns a unprocessable entity status' do
-        put "#{base_route}/#{contribution.id}", headers: auth_headers, params: invalid_params, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
-    end
-  end
-
   describe 'DELETE /destroy' do
     it 'returns status code 204' do
       delete "#{base_route}/#{contribution.id}", headers: auth_headers
