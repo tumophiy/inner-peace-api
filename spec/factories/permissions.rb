@@ -2,7 +2,14 @@
 
 FactoryBot.define do
   factory :permission do
-    name { Faker::Lorem.word }
-    description { Faker::Lorem.paragraph(sentence_count: 3) }
+    can_index_goals { Faker::Boolean.boolean }
+    can_update_goal { Faker::Boolean.boolean }
+    can_delete_goal { Faker::Boolean.boolean }
+    can_create_goal { Faker::Boolean.boolean }
+    can_see_contribution { Faker::Boolean.boolean }
+    can_index_contributions { Faker::Boolean.boolean }
+    can_delete_contribution { Faker::Boolean.boolean }
+    can_create_contribution { Faker::Boolean.boolean }
+    association :role_id
   end
 end
