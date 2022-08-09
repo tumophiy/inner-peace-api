@@ -2,7 +2,7 @@
 
 class ContributionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :contribution, only: %i[show update]
+  before_action :contribution, only: %i[show]
   def index
     contributions = Contribution.where(goal_id: params[:goal_id]).order(created_at: :desc)
     render_serializered_data(contributions, :ok)
@@ -24,14 +24,6 @@ class ContributionsController < ApplicationController
   def destroy
     Contribution.destroy(params[:id])
     render json: {}, status: 204
-  end
-
-  def update
-    if @contribution.update(contribution_params)
-      render_serializered_data(@contribution, :ok)
-    else
-      render json: @contribution.errors, status: :unprocessable_entity
-    end
   end
 
   private
