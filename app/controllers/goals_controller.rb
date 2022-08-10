@@ -2,17 +2,17 @@
 
 class GoalsController < ApplicationController
   before_action :authenticate_user!
-  before_action :give_role
   before_action :goal, only: %i[show update]
   def index
-    render_serializered_data(Goal.recent, :ok)
+    render_serializered_data(Goal.recent, :ok) if can?.index_goals?
   end
 
   def show
-    if can?(show)
+    if can?.see_goal?
       render_serializered_data(@goal, :ok)
     else
       render json: 'no'
+      # alternativly call somemethod here that would return same json
     end
   end
 
@@ -50,21 +50,5 @@ class GoalsController < ApplicationController
 
   def goal_params
     params.require(:goal).permit(:title, :amount, :description, :interest_rate, :deadline, :user_id)
-  end
-
-  def give_role
-    @role = if current_user.is_admin
-              'admin'
-            elsif @goal.user_id == current_user.id
-              'owner'
-            elsif Contribution.where(goal_id: @goal.id).any? { |id| id == current_user.id }
-              'contributor'
-            else
-              'viewer'
-            end
-  end
-
-  def can?(method_name)
-    'here should be some kind of a join usin Role, RolePermissoins, Permissions and look wheather near method_name is true or false'
   end
 end
