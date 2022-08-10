@@ -4,7 +4,7 @@ require 'devise/jwt/test_helpers'
 require 'rails_helper'
 
 RSpec.describe 'Goals', type: :request do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :admin) }
   let(:goal) { create(:goal, user_id: user.id) }
   let(:goal_id) { goal.id }
   let(:base_route) { '/api/goals/' }
