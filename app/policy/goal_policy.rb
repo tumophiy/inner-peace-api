@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GoalPolicy
+module GoalPolicy
   before_action :give_role
 
   def can_see?

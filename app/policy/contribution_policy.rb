@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ContributionPolicy
+module ContributionPolicy
   before_action :give_role
 
   def can_see?
