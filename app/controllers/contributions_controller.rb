@@ -7,11 +7,15 @@ class ContributionsController < ApplicationController
   before_action :contribution, only: %i[show]
   def index
     contributions = Contribution.where(goal_id: params[:goal_id]).order(created_at: :desc)
-    render_serializered_data(contributions, :ok) if ContributionPolicy.can_index?
+    return render_serializered_data(contributions, :ok) if ContributionPolicy.can_index?
+
+    render json: { data: ['You don\'t have rights to do that'] }, status: :unprocessable_entity
   end
 
   def show
-    render_serializered_data(@contribution, :ok) if ContributionPolicy.can_see?
+    return render_serializered_data(@contribution, :ok) if ContributionPolicy.can_see?
+
+    render json: { data: ['You don\'t have rights to do that'] }, status: :unprocessable_entity
   end
 
   def create
@@ -22,6 +26,8 @@ class ContributionsController < ApplicationController
       else
         render json: contribution.errors, status: :unprocessable_entity
       end
+    else
+      render json: { data: ['You don\'t have rights to do that'] }, status: :unprocessable_entity
     end
   end
 
@@ -29,6 +35,8 @@ class ContributionsController < ApplicationController
     if ContributionPolicy.can_delete?
       Contribution.destroy(params[:id])
       render json: {}, status: 204
+    else
+      render json: { data: ['You don\'t have rights to do that'] }, status: :unprocessable_entity
     end
   end
 
