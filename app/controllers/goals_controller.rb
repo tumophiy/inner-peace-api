@@ -6,20 +6,16 @@ class GoalsController < ApplicationController
   before_action :authenticate_user!
   before_action :goal, only: %i[show update]
   def index
-    render_serializered_data(Goal.recent, :ok)
+    render_serializered_data(Goal.recent, :ok) if GoalPolicy.can_index?
   end
 
   def show
-    if can?(show)
-      render_serializered_data(@goal, :ok)
-    else
-      render json: 'no'
-    end
+    render_serializered_data(@goal, :ok) if GoalPolicy.can_see?
   end
 
   def create
     goal = Goal.create(goal_params)
-    if goal.valid?
+    if goal.valid? && GoalPolicy.can_create?
       render_serializered_data(goal, :created)
     else
       render json: goal.errors, status: :unprocessable_entity
@@ -27,12 +23,14 @@ class GoalsController < ApplicationController
   end
 
   def destroy
-    Goal.destroy(params[:id])
-    render json: {}, status: 204
+    if GoalPolicy.can_delete?
+      Goal.destroy(params[:id])
+      render json: {}, status: 204
+    end
   end
 
   def update
-    if @goal.update(goal_params)
+    if @goal.update(goal_params) && GoalPolicy.can_update?
       render_serializered_data(@goal, :ok)
     else
       render json: @goal.errors, status: :unprocessable_entity

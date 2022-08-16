@@ -7,25 +7,29 @@ class ContributionsController < ApplicationController
   before_action :contribution, only: %i[show]
   def index
     contributions = Contribution.where(goal_id: params[:goal_id]).order(created_at: :desc)
-    render_serializered_data(contributions, :ok)
+    render_serializered_data(contributions, :ok) if ContributionPolicy.can_index?
   end
 
   def show
-    render_serializered_data(@contribution, :ok)
+    render_serializered_data(@contribution, :ok) if ContributionPolicy.can_see?
   end
 
   def create
-    contribution = Contribution.create(contribution_params)
-    if contribution.valid?
-      render_serializered_data(contribution, :created)
-    else
-      render json: contribution.errors, status: :unprocessable_entity
+    if ContributionPolicy.can_create?
+      contribution = Contribution.create(contribution_params)
+      if contribution.valid?
+        render_serializered_data(contribution, :created)
+      else
+        render json: contribution.errors, status: :unprocessable_entity
+      end
     end
   end
 
   def destroy
-    Contribution.destroy(params[:id])
-    render json: {}, status: 204
+    if ContributionPolicy.can_delete?
+      Contribution.destroy(params[:id])
+      render json: {}, status: 204
+    end
   end
 
   private
