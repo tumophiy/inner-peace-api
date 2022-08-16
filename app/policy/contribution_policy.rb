@@ -2,24 +2,24 @@
 
 module ContributionPolicy
   def can_see?
-    permission(give_role).can_index_goals
+    permission(role).can_index_goals
   end
 
   def can_create?
-    permission(give_role).can_create_goal
+    permission(role).can_create_goal
   end
 
   def can_index?
-    permission(give_role).can_index_goals
+    permission(role).can_index_goals
   end
 
   def can_delete?
-    permission(give_role).can_delete_goal
+    permission(role).can_delete_goal
   end
 
   private
 
-  def give_role
+  def role
     if current_user.is_admin
       'admin'
     elsif !@goal.nil?
