@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ContributionsController < ApplicationController
+  include ContributionPolicy
+
   before_action :authenticate_user!
   before_action :contribution, only: %i[show]
   def index
