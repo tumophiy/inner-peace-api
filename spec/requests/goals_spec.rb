@@ -4,15 +4,15 @@ require 'devise/jwt/test_helpers'
 require 'rails_helper'
 
 RSpec.describe 'Goals', type: :request do
-  let(:user) { create(:user) }
-  let(:goal) { create :goal }
+  let(:user) { create(:user, :admin) }
+  let(:goal) { create(:goal, user_id: user.id) }
   let(:goal_id) { goal.id }
   let(:base_route) { '/api/goals/' }
   let(:headers) { { 'Accept' => 'application/json', 'Content-Type' => 'application/json' } }
   let(:auth_headers) { Devise::JWT::TestHelpers.auth_headers(headers, user) }
 
   describe 'GET /index' do
-    let!(:goals) { create_list(:goal, 10) }
+    let!(:goals) { create_list(:goal, 10, user_id: user.id) }
 
     it 'returns all goals' do
       get base_route, headers: auth_headers
@@ -27,13 +27,14 @@ RSpec.describe 'Goals', type: :request do
       {
         goal: { amount: goal.amount, interest_rate: goal.interest_rate,
                 title: goal.title, description: goal.description,
-                deadline: goal.deadline }
+                deadline: goal.deadline, user_id: goal.user_id }
       }
     end
 
     context 'with valid params' do
       it 'returns the title' do
         post base_route, headers: auth_headers, params: valid_params, as: :json
+        # binding.pry
         expect(response_body[:attributes][:title]).to eq(goal.title)
       end
 
@@ -85,7 +86,8 @@ RSpec.describe 'Goals', type: :request do
       {
         goal: { amount: goal.amount, interest_rate: goal.interest_rate,
                 title: goal.title, description: goal.description,
-                deadline: goal.deadline }
+                deadline: goal.deadline,
+                user_id: user.id }
       }
     end
 

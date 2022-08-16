@@ -6,5 +6,6 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     expected_date { Faker::Date.forward(days: 23) }
     association :goal_id
+    association :user_id
   end
 end
