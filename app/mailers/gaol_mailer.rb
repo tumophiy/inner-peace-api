@@ -1,0 +1,2 @@
+class GaolMailer < ApplicationMailer
+end
