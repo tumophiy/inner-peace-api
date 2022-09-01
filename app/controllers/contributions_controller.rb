@@ -22,6 +22,7 @@ class ContributionsController < ApplicationController
     if ContributionPolicy.can_create?
       contribution = Contribution.create(contribution_params)
       if contribution.valid?
+        ContributionMailer.notification(owner, params[:amount], @goal).deliver_now
         render_serializered_data(contribution, :created)
       else
         render json: contribution.errors, status: :unprocessable_entity
@@ -41,6 +42,11 @@ class ContributionsController < ApplicationController
   end
 
   private
+
+  def owner
+    @goal = Goal.find_by(id: params[:goal_id])
+    User.find_by(id: @goal.user_id)
+  end
 
   def render_serializered_data(obj, status)
     render json: ContributionSerializer.new(obj), status: status
