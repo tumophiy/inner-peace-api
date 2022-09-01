@@ -13,6 +13,7 @@ module Users
     end
 
     def register_success
+      RegistrationMailer.welcome(current_user).deliver_now
       render json: { message: 'Signed up sucessfully.' }
     end
 
