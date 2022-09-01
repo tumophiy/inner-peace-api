@@ -37,12 +37,13 @@ class GoalsController < ApplicationController
     else
       render json: { data: ['You don\'t have rights to do that'] }, status: :unprocessable_entity
     end
-    end
   end
 
   def update
     if GoalPolicy.can_update?
+      old_goal = @goal
       if @goal.update(goal_params)
+        GoalMailer.changed_goal(donators, old_goal, @goal).deliver_now
         render_serializered_data(@goal, :ok)
       else
         render json: @goal.errors, status: :unprocessable_entity
@@ -53,6 +54,10 @@ class GoalsController < ApplicationController
   end
 
   private
+
+  def donators
+    Users.joins(:contributions).where(goal_id: @goal.id)
+  end
 
   def render_serializered_data(obj, status)
     render json: GoalSerializer.new(obj), status: status
